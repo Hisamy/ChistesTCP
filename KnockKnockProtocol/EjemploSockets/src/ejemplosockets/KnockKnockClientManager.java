@@ -13,7 +13,7 @@ import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class KnockKnockClientManager implements Runnable{
+public class KnockKnockClientManager extends Thread{
     private Socket clientSocket;
     private KnockKnockProtocol kkp;
     
