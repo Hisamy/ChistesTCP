@@ -5,13 +5,9 @@
  */
 package ejemplosockets;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-
 
 /**
  *
@@ -19,25 +15,20 @@ import java.net.Socket;
  */
 public class KnockKnockServer {
 
-    public static void main(String[] args) {      
-        try {
-            ServerSocket serverSocket = null;
-            serverSocket = new ServerSocket(4444);
-	    System.out.println("Ya estoy escuchando");
+    public static void main(String[] args) throws IOException {
+        try (ServerSocket servidorSocket = new ServerSocket(4444)) {
+            System.out.println("Servidor multihilo iniciando en el puerto 4444");
             Socket clientSocket = null;
-            while (true){
-                clientSocket = serverSocket.accept();
+            while (true) {
+                clientSocket = servidorSocket.accept();
                 System.out.println("Acepté a un cliente");
-                new Thread(new KnockKnockClientManager(clientSocket)).start();                                
-            }                                    
+                new Thread(new KnockKnockClientManager(clientSocket)).start();
+            }
         } catch (IOException e) {
             System.err.println("Could not listen on port: 4444.");
             System.exit(1);
         }
-    }    
+    }
+         
+
 }
-
-
-
-    
-
