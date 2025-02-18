@@ -18,9 +18,9 @@ import java.util.concurrent.Executors;
 public class KnockKnockServer {
 
     public static void main(String[] args) throws IOException {
-        
+
         ExecutorService servicio = Executors.newCachedThreadPool();
-        
+
         try (ServerSocket servidorSocket = new ServerSocket(4444)) {
             System.out.println("Servidor multihilo iniciando en el puerto 4444");
             Socket clientSocket = null;
@@ -32,11 +32,9 @@ public class KnockKnockServer {
         } catch (IOException e) {
             System.err.println("Could not listen on port: 4444.");
             System.exit(1);
-        }
-        finally{
+        } finally {
             servicio.shutdown();
         }
     }
-         
 
 }
