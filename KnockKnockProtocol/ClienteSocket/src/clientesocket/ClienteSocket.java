@@ -10,49 +10,41 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
  *
- * @author gilberto.borrego
+ * @author castr
  */
 public class ClienteSocket implements Cliente {
 
     private String host;
     private int puerto;
-    private Socket kkSocket;
-    private PrintWriter out;
-    private BufferedReader in;
+    private StubChistes stubChistes;
 
     public ClienteSocket(String host, int puerto) {
         this.host = host;
         this.puerto = puerto;
     }
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
         Cliente cliente = new ClienteSocketProxy("localhost", 4444);
+        System.out.println("Escriba sus respuestas siguiendo el juego de Knock Knock!");
         cliente.conectar();
-
     }
 
     @Override
     public void conectar() {
 
         try {
-            kkSocket = new Socket(host, puerto);
-            out = new PrintWriter(kkSocket.getOutputStream(), true);
-            in = new BufferedReader(new InputStreamReader(kkSocket.getInputStream()));
+            stubChistes = new StubChistes(host, puerto);
             BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
 
             String fromServer;
             String fromUser;
 
-            while ((fromServer = in.readLine()) != null) {
+            while ((fromServer = stubChistes.obtenerChiste()) != null) {
                 System.out.println("Server: " + fromServer);
                 if (fromServer.equals("Bye.")) {
                     break;
@@ -61,14 +53,16 @@ public class ClienteSocket implements Cliente {
                 fromUser = stdIn.readLine();
                 if (fromUser != null) {
                     System.out.println("Client: " + fromUser);
-                    out.println(fromUser);
+                    stubChistes.responder(fromUser);
                 }
             }
-            out.close();
-            in.close();
+
+            stubChistes.cerrar();
             stdIn.close();
-            kkSocket.close();
+
         } catch (IOException ex) {
+            Logger.getLogger(ClienteSocket.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
             Logger.getLogger(ClienteSocket.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
