@@ -18,27 +18,46 @@ import java.util.logging.Logger;
  *
  * @author gilberto.borrego
  */
-public class ClienteSocket {
+public class ClienteSocket implements Cliente {
+
+    private String host;
+    private int puerto;
+    private Socket kkSocket;
+    private PrintWriter out;
+    private BufferedReader in;
+
+    public ClienteSocket(String host, int puerto) {
+        this.host = host;
+        this.puerto = puerto;
+    }
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Socket kkSocket = null;
-        PrintWriter out = null;
-        BufferedReader in = null;
+        Cliente cliente = new ClienteSocketProxy("localhost", 4444);
+        cliente.conectar();
+
+    }
+
+    @Override
+    public void conectar() {
+
         try {
-            kkSocket = new Socket("localhost", 4444);
+            kkSocket = new Socket(host, puerto);
             out = new PrintWriter(kkSocket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(kkSocket.getInputStream()));
             BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
+
             String fromServer;
             String fromUser;
+
             while ((fromServer = in.readLine()) != null) {
                 System.out.println("Server: " + fromServer);
-                if (fromServer.equals("Bye."))
+                if (fromServer.equals("Bye.")) {
                     break;
-                
+                }
+
                 fromUser = stdIn.readLine();
                 if (fromUser != null) {
                     System.out.println("Client: " + fromUser);
@@ -48,11 +67,9 @@ public class ClienteSocket {
             out.close();
             in.close();
             stdIn.close();
-            kkSocket.close();            
+            kkSocket.close();
         } catch (IOException ex) {
             Logger.getLogger(ClienteSocket.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }
-    
 }
