@@ -4,11 +4,13 @@
  */
 package clientesocket;
 
+import proxyknockknock.Proxy;
+
 /**
  *
  * @author castr
  */
-public class ClienteSocketProxy implements Cliente {
+public class ClienteSocketProxy implements Proxy {
 
     private ClienteSocket clienteSocket;
     private String host;

@@ -8,18 +8,18 @@ package clientesocket;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import proxyknockknock.Proxy;
 
 /**
  *
  * @author castr
  */
-public class ClienteSocket implements Cliente {
+public class ClienteSocket implements Proxy{
 
     private String host;
+    
     private int puerto;
     private StubChistes stubChistes;
 
@@ -29,7 +29,7 @@ public class ClienteSocket implements Cliente {
     }
 
     public static void main(String[] args) {
-        Cliente cliente = new ClienteSocketProxy("localhost", 4444);
+        Proxy cliente = new ClienteSocketProxy("localhost", 4444);
         System.out.println("Escriba sus respuestas siguiendo el juego de Knock Knock!");
         cliente.conectar();
     }
