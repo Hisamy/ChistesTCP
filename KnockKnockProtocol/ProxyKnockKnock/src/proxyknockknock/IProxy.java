@@ -6,7 +6,7 @@ package proxyknockknock;
  *
  * @author hisam
  */
-public interface Proxy {
+public interface IProxy {
     
-    void conectar();
+    void enviarMensaje();
 }

@@ -5,11 +5,13 @@
  */
 package ejemplosockets;
 
+import proxyknockknock.IProxy;
+
 /**
  *
  * @author gilberto.borrego
  */
-public class KnockKnockProtocol {
+public class KnockKnockProtocol implements IProxy{
     private static final int WAITING = 0;
     private static final int SENTKNOCKKNOCK = 1;
     private static final int SENTCLUE = 2;

@@ -12,8 +12,9 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import proxyknockknock.IProxy;
 
-public class KnockKnockClientManager implements Runnable{
+public class KnockKnockClientManager implements Runnable, IProxy{
     private Socket clientSocket;
     private KnockKnockProtocol kkp;
     
