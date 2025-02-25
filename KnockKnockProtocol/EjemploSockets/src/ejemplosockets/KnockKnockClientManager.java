@@ -14,37 +14,45 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import proxyknockknock.IProxy;
 
-public class KnockKnockClientManager implements Runnable, IProxy{
+public class KnockKnockClientManager implements Runnable, IProxy {
+
     private Socket clientSocket;
     private KnockKnockProtocol kkp;
-    
-    public KnockKnockClientManager(Socket c){
+
+    public KnockKnockClientManager(Socket c) {
         this.clientSocket = c;
         this.kkp = new KnockKnockProtocol();
     }
-    
+
     @Override
     public void run() {
+        enviarMensaje();
+    }
+
+    @Override
+    public void enviarMensaje() {
         try {
             PrintWriter out = null;
             BufferedReader in = null;
             out = new PrintWriter(clientSocket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(
                     clientSocket.getInputStream()));
-            String inputLine, outputLine;            
+            String inputLine, outputLine;
             outputLine = kkp.processInput(null);
             out.println(outputLine);
             while ((inputLine = in.readLine()) != null) {
                 outputLine = kkp.processInput(inputLine);
                 out.println(outputLine);
-                if (outputLine.equals("Bye."))
+                if (outputLine.equals("Bye.")) {
                     break;
-            }   out.close();
+                }
+            }
+            out.close();
             in.close();
             clientSocket.close();
         } catch (IOException ex) {
             Logger.getLogger(KnockKnockClientManager.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
 }
